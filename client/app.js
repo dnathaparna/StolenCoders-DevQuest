@@ -1,7 +1,3 @@
-const API_URL = window.location.hostname === 'localhost' 
-    ? 'http://localhost:3001' 
-    : 'https://your-backend-domain.com';  // Update this with your actual backend domain
-
 let currentUser = null;
         let stream = null;
 
@@ -45,7 +41,7 @@ let currentUser = null;
             const role = document.getElementById('userRole').value;
 
             try {
-                const response = await fetch(`${API_URL}/api/signup`, {
+                const response = await fetch('http://localhost:3001/api/signup', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -288,7 +284,7 @@ let currentUser = null;
                 // Compress the image by reducing quality
                 const compressedImage = canvas.toDataURL('image/jpeg', 0.5); // Added quality parameter of 0.5
 
-                const response = await fetch(`${API_URL}/api/scans`, {
+                const response = await fetch('http://localhost:3001/api/scans', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -328,10 +324,8 @@ let currentUser = null;
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
 
-            console.log('Attempting login with:', { email }); // Don't log passwords
-
             try {
-                const response = await fetch(`${API_URL}/api/login`, {
+                const response = await fetch('http://localhost:3001/api/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -339,21 +333,16 @@ let currentUser = null;
                     body: JSON.stringify({ email, password })
                 });
 
-                console.log('Login response status:', response.status);
-
                 if (!response.ok) {
                     const error = await response.json();
                     throw new Error(error.error || 'Login failed');
                 }
 
                 currentUser = await response.json();
-                console.log('Login successful:', currentUser);
-                
                 updateUIForAuth(currentUser);
                 closeLoginModal();
                 showSection('home');
             } catch (error) {
-                console.error('Login error:', error);
                 alert(error.message || 'Login failed. Please try again.');
             }
         }
