@@ -1,0 +1,22 @@
+{
+  "name": "ayurscan",
+  "version": "1.0.0",
+  "description": "AI-Powered Ayurvedic Health Analysis",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "nodemon server/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.17.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

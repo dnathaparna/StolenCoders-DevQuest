@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AyurScan - AI Health Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-50 font-['Poppins']">
+    <!-- Navigation -->
+    <nav class="bg-teal-600 text-white p-4 sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#" onclick="showSection('home')" class="text-2xl font-bold">AyurScan</a>
+            <div class="flex space-x-4">
+                <a href="#" onclick="showSection('scan')" class="hover:text-teal-200 scan-link hidden">Scan</a>
+                <a href="#" onclick="showSection('dashboard')" class="hover:text-teal-200 expert-view hidden">Dashboard</a>
+                <a href="#" onclick="showSection('profile')" class="hover:text-teal-200 profile-link hidden">Profile</a>
+                <a href="#" onclick="openLoginModal()" class="hover:text-teal-200" id="loginBtn">Login</a>
+                <a href="#" onclick="openSignupModal()" class="hover:text-teal-200" id="signupBtn">Sign Up</a>
+                <button onclick="handleLogout()" class="hover:text-teal-200 hidden" id="logoutBtn">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="min-h-screen py-20">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-6">AI-Powered Ayurvedic Health Analysis</h1>
+            <p class="text-xl text-gray-600 mb-8">Get personalized Ayurvedic insights through advanced facial and nail analysis</p>
+            <div class="flex flex-col md:flex-row gap-4 justify-center items-center">
+                <button onclick="checkAuthForScan()" class="bg-teal-600 text-white px-8 py-3 rounded-lg hover:bg-teal-700 transition">
+                    Start Your Analysis
+                </button>
+                <button onclick="openSignupModal('expert')" class="bg-teal-100 text-teal-800 px-8 py-3 rounded-lg hover:bg-teal-200 transition">
+                    Join as Expert
+                </button>
+            </div>
+            <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-6 bg-white rounded-lg shadow-lg">
+                    <i class="bi bi-camera text-4xl text-teal-600"></i>
+                    <h3 class="text-xl font-semibold mt-4">Easy Scanning</h3>
+                    <p class="text-gray-600 mt-2">Quick and simple facial and nail analysis using your device camera</p>
+                </div>
+                <div class="p-6 bg-white rounded-lg shadow-lg">
+                    <i class="bi bi-graph-up text-4xl text-teal-600"></i>
+                    <h3 class="text-xl font-semibold mt-4">AI Analysis</h3>
+                    <p class="text-gray-600 mt-2">Advanced AI-powered analysis based on Ayurvedic principles</p>
+                </div>
+                <div class="p-6 bg-white rounded-lg shadow-lg">
+                    <i class="bi bi-person-check text-4xl text-teal-600"></i>
+                    <h3 class="text-xl font-semibold mt-4">Expert Support</h3>
+                    <p class="text-gray-600 mt-2">Get insights reviewed by certified Ayurvedic practitioners</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Section -->
+    <section id="profile" class="hidden min-h-screen py-20">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <div class="md:flex">
+                        <div class="md:w-1/3 bg-teal-600 text-white p-6">
+                            <div class="text-center">
+                                <div class="w-32 h-32 mx-auto bg-white rounded-full flex items-center justify-center">
+                                    <i class="bi bi-person-circle text-6xl text-teal-600"></i>
+                                </div>
+                                <h2 class="mt-4 text-2xl font-bold" id="profileName">Loading...</h2>
+                                <p class="mt-2" id="profileRole">Loading...</p>
+                            </div>
+                        </div>
+                        <div class="md:w-2/3 p-6">
+                            <div class="mb-6">
+                                <h3 class="text-xl font-semibold mb-4">Account Information</h3>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="text-gray-600">Email</label>
+                                        <p id="profileEmail" class="font-medium">Loading...</p>
+                                    </div>
+                                    <div>
+                                        <label class="text-gray-600">Member Since</label>
+                                        <p id="profileJoinDate" class="font-medium">Loading...</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-4">Scan History</h3>
+                                <div id="scanHistory" class="space-y-4">
+                                    <!-- Scan history will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Expert Dashboard -->
+    <section id="dashboard" class="hidden min-h-screen py-20">
+        <div class="container mx-auto px-4">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-3xl font-bold">Expert Dashboard</h2>
+                    <div class="flex gap-4">
+                        <button onclick="refreshDashboard()" class="bg-teal-100 text-teal-800 px-4 py-2 rounded-lg hover:bg-teal-200">
+                            <i class="bi bi-arrow-clockwise mr-2"></i>Refresh
+                        </button>
+                        <select id="filterStatus" class="bg-gray-100 px-4 py-2 rounded-lg" onchange="filterPatients()">
+                            <option value="all">All Patients</option>
+                            <option value="recent">Recent Scans</option>
+                            <option value="pending">Pending Review</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="patientGrid">
+                    <!-- Patient cards will be populated here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scan Section -->
+    <section id="scan" class="hidden min-h-screen py-20">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto">
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h2 class="text-3xl font-bold text-center mb-8">Health Analysis Scanner</h2>
+                    <div class="mb-6">
+                        <div class="relative">
+                            <video id="video" class="w-full rounded-lg hidden"></video>
+                            <canvas id="canvas" class="w-full rounded-lg"></canvas>
+                            <div id="scanOverlay" class="absolute inset-0 flex items-center justify-center">
+                                <div class="text-center">
+                                    <i class="bi bi-camera text-6xl text-teal-600"></i>
+                                    <p class="mt-4 text-gray-600">Position your face or nail in the frame</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <button id="startCamera" class="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition flex items-center">
+                            <i class="bi bi-camera-fill mr-2"></i>Start Camera
+                        </button>
+                        <button id="switchCamera" class="bg-teal-100 text-teal-800 px-6 py-2 rounded-lg hover:bg-teal-200 transition flex items-center">
+                            <i class="bi bi-arrow-repeat mr-2"></i>Switch Camera
+                        </button>
+                        <button id="capture" class="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition flex items-center" disabled>
+                            <i class="bi bi-record-circle mr-2"></i>Capture
+                        </button>
+                    </div>
+                    <div id="results" class="mt-8 hidden">
+                        <div class="bg-teal-50 border border-teal-200 rounded-lg p-6">
+                            <h3 class="text-xl font-semibold mb-4 text-teal-800">Analysis Results</h3>
+                            <div id="analysisResults" class="space-y-4">
+                                <!-- Results will be populated here -->
+                            </div>
+                            <div class="mt-6 flex justify-end">
+                                <button onclick="saveScanResults()" class="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition">
+                                    Save Results
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sign Up Modal -->
+    <div id="signupModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg max-w-md w-full">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">Create Account</h2>
+                <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Role</label>
+                    <select id="userRole" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                        <option value="patient">Patient</option>
+                        <option value="expert">Ayurvedic Expert</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Full Name</label>
+                    <input type="text" id="fullName" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" id="email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" id="password" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                </div>
+                <button onclick="handleSignup()" class="w-full bg-teal-600 text-white py-2 rounded-md hover:bg-teal-700 transition">
+                    Create Account
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg max-w-md w-full">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">Login</h2>
+                <button onclick="closeLoginModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" id="loginEmail" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" id="loginPassword" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                </div>
+                <button onclick="handleLogin()" class="w-full bg-teal-600 text-white py-2 rounded-md hover:bg-teal-700 transition">
+                    Login
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
+    <script src="https://files.bpcontent.cloud/2025/01/18/09/20250118095332-W1CDXMJE.js"></script>
+    
+    <script src="app.js"></script>
+</body>
+</html>
