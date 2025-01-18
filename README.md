@@ -109,49 +109,11 @@ ayurscan/
         └── users.json    # User data storage
 ```
 
-## API Documentation
 
-### Authentication Endpoints
 
-#### Sign Up
-```http
-POST /api/signup
-Content-Type: application/json
 
-{
-    "fullName": "string",
-    "email": "string",
-    "password": "string",
-    "role": "string"
-}
-```
 
-#### Login
-```http
-POST /api/login
-Content-Type: application/json
 
-{
-    "email": "string",
-    "password": "string"
-}
-```
-
-### Scan Endpoints
-
-#### Save Scan
-```http
-POST /api/scans
-Content-Type: application/json
-
-{
-    "userId": "string",
-    "scanData": {
-        "image": "base64",
-        "analysis": "string"
-    }
-}
-```
 
 ## Deployment
 
@@ -213,7 +175,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact
 Your Name - your.email@example.com
-Project Link: [https://github.com/yourusername/ayurscan](https://github.com/yourusername/ayurscan)
+Project Link: [https://github.com/yourusername/ayurscan](https://github.com/dnathaparna/StolenCoders-DevQuest)
 
 ## Acknowledgments
 - [Tailwind CSS](https://tailwindcss.com/)
@@ -222,4 +184,3 @@ Project Link: [https://github.com/yourusername/ayurscan](https://github.com/your
 
 ---
 
-**Note**: Remember to replace placeholder values (yourusername, your.email@example.com) with actual information before publishing.
