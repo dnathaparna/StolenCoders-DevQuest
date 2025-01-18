@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -7,20 +5,10 @@ const fs = require('fs').promises;
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = 3001;
 
 // Middleware
-app.use(cors({
-    origin: process.env.NODE_ENV === 'production' 
-        ? process.env.PRODUCTION_FRONTEND_URL
-        : process.env.FRONTEND_URL
-}));
-
-// Serve static files in production
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '../client')));
-}
-
+app.use(cors());
 app.use(bodyParser.json());
 
 // Data storage path
@@ -81,24 +69,20 @@ app.post('/api/signup', async (req, res) => {
 app.post('/api/login', async (req, res) => {
     try {
         const { email, password } = req.body;
-        console.log('Login attempt for email:', email);
         
         // Read users
         const usersData = await fs.readFile(USERS_FILE, 'utf8');
         const users = JSON.parse(usersData);
-        console.log('Found users:', users.length);
 
         // Find user
         const user = users.find(u => u.email === email && u.password === password);
         
         if (!user) {
-            console.log('Login failed: Invalid credentials');
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
         // Remove password from response
         const { password: _, ...userWithoutPassword } = user;
-        console.log('Login successful for user:', userWithoutPassword.email);
         res.json(userWithoutPassword);
     } catch (error) {
         console.error('Error in login:', error);
@@ -141,10 +125,3 @@ initializeDataStorage().then(() => {
         console.log(`Server running on http://localhost:${PORT}`);
     });
 });
-
-// Add a catch-all route for the frontend in production
-if (process.env.NODE_ENV === 'production') {
-    app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, '../client/index.html'));
-    });
-}
